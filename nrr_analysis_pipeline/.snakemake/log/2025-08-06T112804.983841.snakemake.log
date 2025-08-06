@@ -1,0 +1,327 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 5
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count    min threads    max threads
+---------------------  -------  -------------  -------------
+all                          1              1              1
+make_vis                     1              1              1
+matutils_extract             8              1              1
+neighborhood_analysis       15              1              1
+total                       25              1              1
+
+Select jobs to execute...
+
+[Wed Aug  6 11:28:05 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors8
+    jobid: 18
+    wildcards: file_type=truth, dist_threshold=8
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:05 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors5
+    jobid: 6
+    wildcards: file_type=sim, dist_threshold=5
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:05 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors1
+    jobid: 4
+    wildcards: file_type=sim, dist_threshold=1
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:05 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors3
+    jobid: 10
+    wildcards: file_type=truth, dist_threshold=3
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:05 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors5
+    jobid: 14
+    wildcards: file_type=truth, dist_threshold=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:06 2025]
+Finished job 6.
+1 of 25 steps (4%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:06 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors10
+    jobid: 22
+    wildcards: file_type=truth, dist_threshold=10
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:06 2025]
+Finished job 10.
+2 of 25 steps (8%) done
+[Wed Aug  6 11:28:06 2025]
+Finished job 4.
+3 of 25 steps (12%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:06 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors3, results/sim.30000.col.neighbors1
+    output: results/true3.sim1
+    jobid: 9
+    wildcards: true_dists=3, sim_dists=1
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:06 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors1
+    jobid: 3
+    wildcards: file_type=truth, dist_threshold=1
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:06 2025]
+Finished job 14.
+4 of 25 steps (16%) done
+[Wed Aug  6 11:28:06 2025]
+Finished job 18.
+5 of 25 steps (20%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:06 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors8, results/sim.30000.col.neighbors1
+    output: results/true8.sim1
+    jobid: 17
+    wildcards: true_dists=8, sim_dists=1
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:06 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors10
+    jobid: 8
+    wildcards: file_type=sim, dist_threshold=10
+    resources: tmpdir=/tmp
+
+Select jobs to execute...
+[Wed Aug  6 11:28:07 2025]
+Finished job 3.
+6 of 25 steps (24%) done
+
+[Wed Aug  6 11:28:07 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors8, results/sim.30000.col.neighbors5
+    output: results/true8.sim5
+    jobid: 19
+    wildcards: true_dists=8, sim_dists=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:07 2025]
+Finished job 22.
+7 of 25 steps (28%) done
+[Wed Aug  6 11:28:07 2025]
+Finished job 8.
+8 of 25 steps (32%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:07 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors1, results/sim.30000.col.neighbors1
+    output: results/true1.sim1
+    jobid: 2
+    wildcards: true_dists=1, sim_dists=1
+    resources: tmpdir=/tmp
+
+
+[Wed Aug  6 11:28:07 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors3, results/sim.30000.col.neighbors10
+    output: results/true3.sim10
+    jobid: 12
+    wildcards: true_dists=3, sim_dists=10
+    resources: tmpdir=/tmp
+
+Select jobs to execute...
+[Wed Aug  6 11:28:12 2025]
+Finished job 9.
+9 of 25 steps (36%) done
+
+[Wed Aug  6 11:28:12 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors10, results/sim.30000.col.neighbors1
+    output: results/true10.sim1
+    jobid: 21
+    wildcards: true_dists=10, sim_dists=1
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:13 2025]
+Finished job 2.
+10 of 25 steps (40%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:13 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors5, results/sim.30000.col.neighbors1
+    output: results/true5.sim1
+    jobid: 13
+    wildcards: true_dists=5, sim_dists=1
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:16 2025]
+Finished job 17.
+11 of 25 steps (44%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:16 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors1, results/sim.30000.col.neighbors5
+    output: results/true1.sim5
+    jobid: 5
+    wildcards: true_dists=1, sim_dists=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:17 2025]
+Finished job 19.
+12 of 25 steps (48%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:17 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors5, results/sim.30000.col.neighbors5
+    output: results/true5.sim5
+    jobid: 15
+    wildcards: true_dists=5, sim_dists=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:19 2025]
+Finished job 13.
+13 of 25 steps (52%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:19 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors1, results/sim.30000.col.neighbors10
+    output: results/true1.sim10
+    jobid: 7
+    wildcards: true_dists=1, sim_dists=10
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:19 2025]
+Finished job 12.
+14 of 25 steps (56%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:19 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors3, results/sim.30000.col.neighbors5
+    output: results/true3.sim5
+    jobid: 11
+    wildcards: true_dists=3, sim_dists=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:21 2025]
+Finished job 21.
+15 of 25 steps (60%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:21 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors10, results/sim.30000.col.neighbors10
+    output: results/true10.sim10
+    jobid: 24
+    wildcards: true_dists=10, sim_dists=10
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:22 2025]
+Finished job 5.
+16 of 25 steps (64%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:22 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors10, results/sim.30000.col.neighbors5
+    output: results/true10.sim5
+    jobid: 23
+    wildcards: true_dists=10, sim_dists=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:23 2025]
+Finished job 15.
+17 of 25 steps (68%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:23 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors8, results/sim.30000.col.neighbors10
+    output: results/true8.sim10
+    jobid: 20
+    wildcards: true_dists=8, sim_dists=10
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:25 2025]
+Finished job 11.
+18 of 25 steps (72%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:25 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors5, results/sim.30000.col.neighbors10
+    output: results/true5.sim10
+    jobid: 16
+    wildcards: true_dists=5, sim_dists=10
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:29 2025]
+Finished job 7.
+19 of 25 steps (76%) done
+[Wed Aug  6 11:28:29 2025]
+Finished job 24.
+20 of 25 steps (80%) done
+[Wed Aug  6 11:28:30 2025]
+Finished job 20.
+21 of 25 steps (84%) done
+[Wed Aug  6 11:28:31 2025]
+Finished job 23.
+22 of 25 steps (88%) done
+[Wed Aug  6 11:28:32 2025]
+Finished job 16.
+23 of 25 steps (92%) done
+Select jobs to execute...
+
+[Wed Aug  6 11:28:32 2025]
+rule make_vis:
+    input: results/true1.sim1, results/true1.sim5, results/true1.sim10, results/true3.sim1, results/true3.sim5, results/true3.sim10, results/true5.sim1, results/true5.sim5, results/true5.sim10, results/true8.sim1, results/true8.sim5, results/true8.sim10, results/true10.sim1, results/true10.sim5, results/true10.sim10
+    output: results/nrr_visual.svg
+    jobid: 1
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 11:28:32 2025]
+Error in rule make_vis:
+    jobid: 1
+    output: results/nrr_visual.svg
+    shell:
+        
+        python3 scripts/multi_panel_fig_8_props.py
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/.snakemake/log/2025-08-06T112804.983841.snakemake.log

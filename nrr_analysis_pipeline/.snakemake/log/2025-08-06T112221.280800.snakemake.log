@@ -1,0 +1,4 @@
+Building DAG of jobs...
+WildcardError in line 10 of /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/nrr_analysis:
+Wildcards in input files cannot be determined from output files:
+'true_dists'

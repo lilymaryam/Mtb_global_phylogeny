@@ -1,0 +1,11 @@
+Building DAG of jobs...
+MissingInputException in line 1 of /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/nrr_analysis:
+Missing input files for rule all:
+output/sim.30000.col.neighbors1
+output/sim.30000.col.neighbors8
+output/sim.30000.col.neighbors5
+output/truth.30000.col.neighbors1
+output/truth.30000.col.neighbors5
+output/sim.30000.col.neighbors3
+output/truth.30000.col.neighbors10
+output/sim.30000.col.neighbors10

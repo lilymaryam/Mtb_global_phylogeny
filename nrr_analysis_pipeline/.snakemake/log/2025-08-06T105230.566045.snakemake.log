@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count    min threads    max threads
+---------------------  -------  -------------  -------------
+all                          1              1              1
+matutils_extract             5              1              1
+neighborhood_analysis       15              1              1
+total                       21              1              1
+
+Select jobs to execute...
+
+[Wed Aug  6 10:52:31 2025]
+rule neighborhood_analysis:
+    input: results/truth.30000.col.neighbors5, results/sim.30000.col.neighbors5
+    output: results/true5.sim5
+    jobid: 15
+    wildcards: true_dists=5, sim_dists=5
+    resources: tmpdir=/tmp
+
+[Wed Aug  6 10:52:31 2025]
+Error in rule neighborhood_analysis:
+    jobid: 15
+    output: results/true5.sim5
+    shell:
+        
+        py scripts/neighborhoodanalysis.py -t1 results/truth.30000.col.neighbors5 -t2 results/sim.30000.col.neighbors5 -o results/true5.sim5
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/.snakemake/log/2025-08-06T105230.566045.snakemake.log

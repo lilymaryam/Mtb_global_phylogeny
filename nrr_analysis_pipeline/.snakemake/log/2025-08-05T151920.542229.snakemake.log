@@ -1,0 +1,126 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count    min threads    max threads
+----------------  -------  -------------  -------------
+all                     1              1              1
+matutils_extract        8              1              1
+total                   9              1              1
+
+Select jobs to execute...
+
+[Tue Aug  5 15:19:21 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors10
+    jobid: 8
+    wildcards: file_type=sim, dist_threshold=10
+    resources: tmpdir=/tmp
+
+
+[Tue Aug  5 15:19:21 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors1
+    jobid: 1
+    wildcards: file_type=truth, dist_threshold=1
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:21 2025]
+Finished job 1.
+1 of 9 steps (11%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:21 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors8
+    jobid: 7
+    wildcards: file_type=sim, dist_threshold=8
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:21 2025]
+Finished job 8.
+2 of 9 steps (22%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:21 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors3
+    jobid: 5
+    wildcards: file_type=sim, dist_threshold=3
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:22 2025]
+Finished job 7.
+3 of 9 steps (33%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:22 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors5
+    jobid: 2
+    wildcards: file_type=truth, dist_threshold=5
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:22 2025]
+Finished job 5.
+4 of 9 steps (44%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:22 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors1
+    jobid: 4
+    wildcards: file_type=sim, dist_threshold=1
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:22 2025]
+Finished job 2.
+5 of 9 steps (56%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:23 2025]
+rule matutils_extract:
+    input: data/truth.30000.col.pb
+    output: results/truth.30000.col.neighbors10
+    jobid: 3
+    wildcards: file_type=truth, dist_threshold=10
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:23 2025]
+Finished job 4.
+6 of 9 steps (67%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:23 2025]
+rule matutils_extract:
+    input: data/sim.30000.col.pb
+    output: results/sim.30000.col.neighbors5
+    jobid: 6
+    wildcards: file_type=sim, dist_threshold=5
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:23 2025]
+Finished job 6.
+7 of 9 steps (78%) done
+[Tue Aug  5 15:19:23 2025]
+Finished job 3.
+8 of 9 steps (89%) done
+Select jobs to execute...
+
+[Tue Aug  5 15:19:23 2025]
+localrule all:
+    input: results/truth.30000.col.neighbors1, results/truth.30000.col.neighbors5, results/truth.30000.col.neighbors10, results/sim.30000.col.neighbors1, results/sim.30000.col.neighbors3, results/sim.30000.col.neighbors5, results/sim.30000.col.neighbors8, results/sim.30000.col.neighbors10
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 15:19:23 2025]
+Finished job 0.
+9 of 9 steps (100%) done
+Complete log: /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/.snakemake/log/2025-08-05T151920.542229.snakemake.log

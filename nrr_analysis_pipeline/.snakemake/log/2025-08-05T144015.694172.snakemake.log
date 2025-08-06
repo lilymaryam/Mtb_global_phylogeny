@@ -1,0 +1,21 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count    min threads    max threads
+-----  -------  -------------  -------------
+all          1              1              1
+total        1              1              1
+
+Select jobs to execute...
+
+[Tue Aug  5 14:40:16 2025]
+localrule all:
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Tue Aug  5 14:40:16 2025]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/.snakemake/log/2025-08-05T144015.694172.snakemake.log

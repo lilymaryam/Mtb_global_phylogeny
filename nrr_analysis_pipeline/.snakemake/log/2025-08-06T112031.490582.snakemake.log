@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 1 of /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/nrr_analysis:
+Missing input files for rule all:
+results/nrr_visual.svg

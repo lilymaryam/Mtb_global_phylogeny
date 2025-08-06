@@ -1,0 +1,2 @@
+SyntaxError in line 14 of /home/lily/scripts/Mtb_global_phylogeny/nrr_analysis_pipeline/nrr_analysis:
+Command must be given as string after the shell keyword. (nrr_analysis, line 14)

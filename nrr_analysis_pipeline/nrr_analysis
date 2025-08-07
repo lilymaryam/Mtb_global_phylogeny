@@ -16,7 +16,7 @@ rule make_vis:
         "results/nrr_visual.svg"
     shell:
         """
-        python3 scripts/multi_panel_fig_8_props.py
+        python3 scripts/nrr_analysis_vis.py
         """
 
 

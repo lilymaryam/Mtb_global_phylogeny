@@ -12,7 +12,11 @@ vcf_to_diff_script.py: Python script converts vcf to MAPLE format. This version 
 ### Evaluation of the accuracy of UShER for public health inquiry
 nrr_analysis_pipeline/: this directory contains a snakemake pipeline that compares the accuracy of the phylogeny built by usher-sampled with simulated data from Alisim (nrr_analysis_pipeline/data/truth.30000.col.pb)(see Methods) to the truth phylogeny (nrr_analysis_pipeline/data/truth.30000.col.pb). To run this pipeline, naviagate to the dir and run `snakmake -s nrr_analysis --cores {number of cores}`. This will result with nrr_visual.svg, which is Extended Data Figure 1 in the paper. 
 
-rfdendro.py:  
+rfdendro.py: calculates the normalized robinson foulds distance between 2 bifurcating newick trees WITH IDENTICAL TAXA
+To calculate the normalized rf distance between the simulated and truth trees use `data/*.30000.nwk`
+
+
+
 
 
 

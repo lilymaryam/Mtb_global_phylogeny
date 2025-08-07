@@ -40,7 +40,6 @@ def parse_args():
 # Example usage
 def main():
     args = parse_args()
-    
     unweighted_rf, max_rf, normalized_rf = normalized_rf_distance(args.tree1, args.tree2)
     
     print(f"Unweighted RF Distance: {unweighted_rf}")

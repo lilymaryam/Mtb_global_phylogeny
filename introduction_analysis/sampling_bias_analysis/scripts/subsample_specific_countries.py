@@ -1,4 +1,5 @@
 import argparse
+import random
 
 def probability(value):
     fval = float(value)
@@ -12,6 +13,7 @@ def parse_arguments():
     parser.add_argument("--output_file", type=str, required=True, help="Path to output file to be used for pruning.")
     parser.add_argument("--countries", type=str, required=True, help="Comma-separated country codes (e.g., GBR,CHN,IND)")
     parser.add_argument("--downsample", type=probability, required=True, help="Percentage of samples to remove.")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility (default: 42)")
     return parser.parse_args()
 
 def read_file(file_path):
@@ -23,7 +25,6 @@ def read_file(file_path):
             sample = fields[0]
             if len(fields) == 2:
                 country_code = fields[1]
-                #print(f"Sample: {sample}, Country code: {country_code}")
                 if len(country_code) != 3:
                     assert False, f"Country code {country_code} is not 3 letters long."
             if len(fields) > 2:
@@ -35,14 +36,16 @@ def read_file(file_path):
             countries[country_code].append(sample)
     return countries
 
-def downsample_samples(countries_dict, countries, percentage, output_file):
+def downsample_samples(countries_dict, countries, percentage, output_file, seed):
+    random.seed(seed)
     prune_samples = {}
     for country_code, samples in countries_dict.items():
-        #print(f"Processing country code: {country_code}, Number of samples: {len(samples)}")
         if country_code in countries:
+            # Shuffle before taking subset
+            samples_copy = samples.copy()
+            random.shuffle(samples_copy)
             num_samples = int(len(samples) * percentage)
-            #print(f"Number of samples to prune for country", samples)
-            prune_samples[country_code] = samples[:num_samples]
+            prune_samples[country_code] = samples_copy[:num_samples]
     
     with open(output_file, "w") as f:
         for country_code, samples in prune_samples.items():
@@ -55,11 +58,10 @@ def main():
     args = parse_arguments()
     countries_dict = read_file(args.sample_country_tsv)
     country_list = args.countries.split(',')
-    downsample_samples(countries_dict, country_list, args.downsample, args.output_file)
+    downsample_samples(countries_dict, country_list, args.downsample, args.output_file, args.seed)
 
 if __name__ == "__main__":
     main()
-
 
     
     

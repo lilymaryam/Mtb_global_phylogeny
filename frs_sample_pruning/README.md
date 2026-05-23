@@ -19,6 +19,7 @@ Join FRS and lineage info (easier to do this with old metadata file bc VCFs use 
 `join -1 1 -2 1 -t $'\t' <(cut -f1,4 data/FRSpercentages_april2026.tsv | sort -k1,1 ) <(cut -f1,10  mtb.20240912.metadata.tsv | sort -k1,1 )  > FRSandlineages.20260415.tsv`
 Rename Valencia ids to Biosamples
 `awk -F'\t' 'NR==FNR{map[$1]=$2; next} $1 in map{$1=map[$1]} 1' OFS='\t' GtoBiosamp_conversion.tsv FRSandlineages.20260415.tsv > FRSandlineages.20260415_renamed.tsv`
+
 Use `FRSandlineages.20260415_renamed.tsv` to identify good samples to pair for mixing. 
 First only use samples with very low FRS proportions 
 `awk '$2<=0.03' FRSandlineages.20260415_renamed.tsv  > lowFRSandlineages.tsv`
@@ -26,20 +27,18 @@ First only use samples with very low FRS proportions
 Use AI assisted script to randomly pair low FRS samples to other samples cross lineage and within lineages (beyond 2nd order sublineages)
 `py scripts/pair_samples.py lowFRSandlineages.tsv pairedformixing.tsv`
 
-get SRX accessions for Biosamples
-`join -1 1 -2 1 -t $'\t' <(sort -k1,1 lowFRSandlineages.tsv ) <(cut -f1,16  mtb.20260415.metadata.tsv | sort -k1,1 ) > lowFRSandlineages_withAcc.tsv`
-`cut -f1,4 lowFRSandlineages_withAcc.tsv > biosample_srx_lookup.tsv`
+From `pairedformixing.tsv` we randomly selected 100 sample mixes which we store in `sample_pairs_list.txt`
 
-(Hopefully) find accessions, pull fastqs, and mix them
-`conda env create -f envs/fastq-mixing.yml`
-`conda activate fastq-mixing`
-`mix samples command goes here`
+Run pipeline to make and analyze data. `snakemake -s frs_testing.smk --executor slurm --jobs 50 --resources ncbi_api=2 --rerun-incomplete --keep-going`
+
+Analyze mixed sample stats 
+`python3 scripts/summarize_frs.py /private/groups/corbettlab/lily/frs_testing/frs_matrix.tsv summary`
 
 verify samples are mixed with command like this 
 `grep "^@" mixed_70_30_R1.fastq | cut -d'.' -f1 | sort | uniq -c`
 
 
-## Run mixed FASTQs through myco pipeline
+## mixed FASTQs are run through myco pipeline
 `wget https://raw.githubusercontent.com/aofarrel/myco/7.0.6/myco_raw.wdl`
 create template for inputs to myco_raw
 `miniwdl input-template myco_raw.wdl > inputs_template.json`

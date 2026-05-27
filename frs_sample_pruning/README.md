@@ -38,9 +38,73 @@ Run pipeline to make and analyze data. `snakemake -s frs_testing.smk --executor 
 The pipeline downloads FASTQs for each sample in the final dataset, uses seqtk to mix FASTQs at the appropriate ratio, uses myco to assemble FASTQ and generate VCF, and calculates percentage of low FRS variants in each sample-ratio. 
 
 After pipeline finishes analyze mixed sample stats: 
-`python3 scripts/summarize_frs.py /private/groups/corbettlab/lily/frs_testing/frs_matrix.tsv summary`
+`python3 scripts/summarize_frs.py /private/groups/corbettlab/lily/frs_testing/frs_matrix.tsv data/summary.tsv`
+
+`data/summary.tsv` summarizes the entirety of the mixed sample FRS experiment. It is essential for future QC decisions.
+
 
 you can verify samples are mixed with command like this 
 `grep "^@" mixed_70_30_R1.fastq | cut -d'.' -f1 | sort | uniq -c`
+
+## After determining mean percentage of low-FRS for each sample mix ratio, look back at the real data.
+
+From the myco pipeline, 135,180 samples passed QC and had data generated for the final tree. The 135,180 sample tree is available at `data/may2026_treebeforepruning_135180samples.pb` From this tree, 137 samples were removed as they were presumed to be *M. cannettii* the pruned samples are at `data/cannettii_samples.tsv` the tree was pruned with the command `matUtils extract -i data/may2026_treebeforepruning_135180samples.pb -s data/cannettii_samples.tsv -p -o data/may2026_treebeforepruning_135180samples.137cannettiiremoved.pb` and the sans-cannettii tree is in `data/may2026_treebeforepruning_135180samples.137cannettiiremoved.pb`. This tree was used for the FRS analysis. 
+
+FRS data was calculated by evaluating the vcfs generated with the following bash script:
+
+`
+#!/bin/bash
+
+# Directory containing VCF files
+VCF_DIR="" #location of VCFs
+
+echo -e "sample\tvariants\tlow_FRS_variants\tprop_lowFRS_vars"
+# Iterate over all .vcf files in the directory
+for inputfile in "$VCF_DIR"/*.vcf; do
+	# Extract the filename without the directory and extension
+	filename=$(basename "$inputfile" .vcf)
+	#get total number of variants in vcf
+	tot=$(cat "$inputfile" | grep -v "#" | wc -l)
+	# Run bcftools filter command
+	# identify number of variants below FRS threshold
+	filt=$(bcftools filter -i 'FRS<.85' "$inputfile" | grep -v '#' | wc -l)
+	#calculate percentage of variants below FRS threshold
+	result=$(echo "scale=4; $filt/$tot" | bc)
+	echo -e "${filename}\t${tot}\t${filt}\t${result}"
+
+	# Optional: Print status
+	#echo "Filtered $inputfile -> $outputfile"
+done
+`
+
+It detects the number of "low-FRS" (<0.85) variants in a vcf compared to the total number of variants. **NOTE: due to storage demands VCF files are not publicly available. Pls contact the corresponding author for further information.**
+
+The results of this script are found in `data/FRSpercents_unpruned_may2026_FINAL.tsv` this file contains an FRS score for all 135,180 samples on the tree (cannettii included).
+
+The FRS values for samples minus cannettii can be found here `data/FRSpercents_unpruned_may2026_FINAL_nocannettii.tsv`. 
+
+In order to visualize samples with each FRS value, we need to make metadata. 
+`python3 scripts/make_metadata_file.py -s data/FRSpercents_unpruned_may2026_FINAL_nocannettii.tsv -t data/summary.tsv -o data/FRSmetadata_nocannettii_FINAL.tsv -pb data/may2026_treebeforepruning_135180samples.canettiremoved.pb`
+
+We then make the visual with 
+`usher_to_taxonium -i data/may2026_treebeforepruning_135180samples.137cannettiiremoved.pb -m data/FRSmetadata_nocannettii_FINAL.tsv -c strain,frs,0.4,0.39,0.38,0.37,0.36,0.34,0.32,0.31,0.28,0.26,0.24,0.22,0.19,0.17,0.15,0.12,0.09,0.07,0.05,0.04,terminal_branch_length,root_distance -o data/may2026_treebeforepruning_135180samples.137cannettiiremoved.annotated.jsonl.gz`
+
+`data/may2026_treebeforepruning_135180samples.137cannettiiremoved.annotated.jsonl.gz` can be input to taxonium.org to visualize the cutoffs. 
+
+`python scripts/metadata_analysis.py data/FRSmetadata_nocannettii_FINAL.tsv > data/cutoff_statistics.tsv` will identify the number of samples removed by each threshold and identify the average and median terminal branch length as well as the number of samples with a terminal branch length of 2 or less. 
+
+To get a list of samples to prune from the tree based on FRS value > 0.19 `awk '$2 > 0.19' data/FRSmetadata_nocannettii_FINAL.tsv > data/FRSgreaterthan.19.tsv`
+
+prune these samples from the data `matUtils extract -i data/may2026_treebeforepruning_135180samples.137cannettiiremoved.pb -s data/FRSgreaterthan.19.tsv -p -o data/may2026_treebeforepruning_135180samples.137cannettiiremoved.5631samplesFRSpruned.pb`
+
+After you decide that 0.19 is the best cutoff for FRS you need to make one more visual.
+`python3 scripts/annotate_manual_prunes.py --prune-list  ../Supplemental/SupplementalTable3.tsv  --large-file  data/FRSmetadata_nocannettii_FINAL.tsv --output data/FRSmetadata_nocannettii_FINAL_plusmanual.tsv`
+
+`usher_to_taxonium -i data/may2026_treebeforepruning_135180samples.137cannettiiremoved.pb -m data/FRSmetadata_nocannettii_FINAL_plusmanual.tsv -c strain,frs,0.4,0.39,0.38,0.37,0.36,0.34,0.32,0.31,0.28,0.26,0.24,0.22,0.19,0.17,0.15,0.12,0.09,0.07,0.05,0.04,terminal_branch_length,root_distance,filter -o data/may2026_treebeforepruning_135180samples.137cannettiiremoved.fullannotation.jsonl.gz`
+
+
+
+
+
 
 

@@ -21,6 +21,20 @@
 **rfdendro.py**: calculates the normalized robinson foulds distance between 2 bifurcating newick trees WITH IDENTICAL TAXA
 To calculate the normalized rf distance between the simulated and truth trees use `data/*.30000.nwk`
 
+### _De novo_ phylogeny reconstruction with UShER-TB
+Once the Variant Calling has been performed using the _myco_ pipeline, the tree reconstruction consists of an easy, 2-step pipeline:
+
+1. First, we need to prepare the base tree with the reference by generating a pb (protobuf) file, which will act as a starting point for sample placement:
+
+```echo "();" > base_tree.nwk```
+```echo ">ref" > ref.diff"```
+```usher-sampled -t base_tree.nwk --diff ref.diff --ref <reference.fasta> -o ref.pb```
+
+2. Then, we add the rest of the samples to the ref.pb tree, generating a new, complete pb tree. To generate the newick file, we add the -u parameter:
+
+```usher-sampled -i <ref.pb> --diff <concatenated_diff_files> --ref <reference.fasta> -o <output_tree.pb> -u -d <output_directory>```
+
+
 ### Sample placement in an existing tree using UShER-TB
 The basic command needed to add new sequences to an existing phylogeny is as follows:
 

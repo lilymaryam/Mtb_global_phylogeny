@@ -27,7 +27,9 @@ Once the Variant Calling has been performed using the _myco_ pipeline, the tree 
 1. First, we need to prepare the base tree with the reference by generating a pb (protobuf) file, which will act as a starting point for sample placement:
 
 ```echo "();" > base_tree.nwk```
+
 ```echo ">ref" > ref.diff"```
+
 ```usher-sampled -t base_tree.nwk --diff ref.diff --ref <reference.fasta> -o ref.pb```
 
 2. Then, we add the rest of the samples to the ref.pb tree, generating a new, complete pb tree. To generate the newick file, we add the -u parameter:

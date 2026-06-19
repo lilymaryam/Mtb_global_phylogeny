@@ -32,7 +32,7 @@ Once the Variant Calling has been performed using the _myco_ pipeline, the tree 
 
 ```usher-sampled -t base_tree.nwk --diff ref.diff --ref <reference.fasta> -o ref.pb```
 
-2. Then, we add the rest of the samples to the ref.pb tree, generating a new, complete pb tree. To generate the newick file, we add the -u parameter:
+2. Then, we add the rest of the samples to the ref.pb tree, generating a new, complete pb tree. To generate the newick file, we add the `-u` parameter:
 
 ```usher-sampled -i <ref.pb> --diff <concatenated_diff_files> --ref <reference.fasta> -o <output_tree.pb> -u -d <output_directory>```
 

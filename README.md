@@ -23,6 +23,7 @@ To calculate the normalized rf distance between the simulated and truth trees us
 
 ### Sample placement in an existing tree using UShER-TB
 The basic command needed to add new sequences to an existing phylogeny is as follows:
+
 `usher-sampled -i <tree_in_pb_format> -o <output_name.pb> --diff <diff_file> -d <output_directory>`
 
 Where:

@@ -7,47 +7,40 @@ For each threshold column, reports:
   - Mean terminal branch length of cut samples
   - Median terminal branch length of cut samples
   - % of cut samples with terminal_branch_length <= 2
+  - Mean root distance of cut samples
+  - Median root distance of cut samples
 """
 
 import sys
 import csv
 import statistics
 
-def parse_metadata(filepath):
-    """Parse the tab-separated metadata file."""
-    rows = []
-    thresholds = []
 
+def parse_metadata(filepath):
+    rows = []
     with open(filepath, newline="") as fh:
         reader = csv.DictReader(fh, delimiter="\t")
         fieldnames = reader.fieldnames
-
-        # Collect threshold column names (everything between 'frs' and 'terminal_branch_length')
         frs_idx = fieldnames.index("frs")
         tbl_idx = fieldnames.index("terminal_branch_length")
         thresholds = fieldnames[frs_idx + 1 : tbl_idx]
-
         for row in reader:
             rows.append(row)
-
     return rows, thresholds
 
 
 def analyze(rows, thresholds):
-    """For each threshold, compute summary stats for cut samples."""
     results = []
 
     for thresh in thresholds:
         cut_tbl = []
+        cut_rd = []
 
         for row in rows:
             cell = row[thresh].strip()
-            tbl = int(row["terminal_branch_length"].strip())
-
-            # Sample is "cut" when its FRS is above the threshold,
-            # indicated by the cell starting with '>'
             if cell.startswith(">"):
-                cut_tbl.append(tbl)
+                cut_tbl.append(int(row["terminal_branch_length"].strip()))
+                cut_rd.append(int(row["root_distance"].strip()))
 
         n_cut = len(cut_tbl)
 
@@ -55,33 +48,37 @@ def analyze(rows, thresholds):
             mean_tbl   = "N/A"
             median_tbl = "N/A"
             pct_le2    = "N/A"
+            mean_rd    = "N/A"
+            median_rd  = "N/A"
         else:
             mean_tbl   = round(statistics.mean(cut_tbl), 4)
             median_tbl = round(statistics.median(cut_tbl), 4)
             pct_le2    = round(100 * sum(1 for t in cut_tbl if t <= 2) / n_cut, 2)
+            mean_rd    = round(statistics.mean(cut_rd), 4)
+            median_rd  = round(statistics.median(cut_rd), 4)
 
         results.append({
-            "threshold":              thresh,
-            "n_cut":                  n_cut,
-            "mean_terminal_bl":       mean_tbl,
-            "median_terminal_bl":     median_tbl,
-            "pct_cut_with_tbl_le2":   pct_le2,
+            "threshold":            thresh,
+            "n_cut":                n_cut,
+            "mean_terminal_bl":     mean_tbl,
+            "median_terminal_bl":   median_tbl,
+            "pct_cut_with_tbl_le2": pct_le2,
+            "mean_root_distance":   mean_rd,
+            "median_root_distance": median_rd,
         })
 
     return results
 
 
 def print_results(results, total_samples):
-    tsv_header = "\t".join([
-        "threshold", "n_cut", "pct_of_total", "mean_TBL", "median_TBL", "pct_cut_TBL_le2"
+    header = "\t".join([
+        "threshold", "n_cut", "pct_of_total", "mean_TBL", "median_TBL",
+        "pct_cut_TBL_le2", "mean_root_distance", "median_root_distance"
     ])
-    print(tsv_header)
+    print(header)
 
     for r in results:
-        pct_total = (
-            round(100 * r["n_cut"] / total_samples, 2)
-            if total_samples > 0 else "N/A"
-        )
+        pct_total = round(100 * r["n_cut"] / total_samples, 2) if total_samples > 0 else "N/A"
         print("\t".join([
             r["threshold"],
             str(r["n_cut"]),
@@ -89,6 +86,8 @@ def print_results(results, total_samples):
             str(r["mean_terminal_bl"]),
             str(r["median_terminal_bl"]),
             str(r["pct_cut_with_tbl_le2"]),
+            str(r["mean_root_distance"]),
+            str(r["median_root_distance"]),
         ]))
 
 

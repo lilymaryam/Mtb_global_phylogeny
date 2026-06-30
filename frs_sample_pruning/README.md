@@ -1,5 +1,6 @@
-# Improving and automating the curation of ancestrally placed samples on the tree
-In order to prove my method for pruning coinfections is valid I am simulating coinfected samples and determining valid cutoffs for removal. 
+# Identifying a threshold for the pruning of putative coinfections from the final phylogenetic tree
+
+In order to identify a reasonable cutoff for pruning coinfections from the tree, I am simulating coinfected samples and calculating FRS values to identify reasonable values for removal. 
 
 ## Step 1 of this process is identifying good samples to pair for coinfection.
  
